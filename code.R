@@ -1,5 +1,4 @@
-# DEGREE DAY CALCULATION AND PHENOLOGY MODELING OF BEET LEAF HOPPER AND GREEN
-# PEACH APHID IN COLORADO
+# DEGREE DAY CALCULATION AND PHENOLOGY MODELING OF BEET LEAF HOPPER IN COLORADO
 
 # PRERAPRED BY DIEGO RINCON (diego.rincon@wsu.edu)
 
@@ -111,8 +110,8 @@ plot(blh_dds$dds, blh_dds$blh_mean, xlab = "Degree days",
 
 # aggregate mean captures by site
 
-blh_site <- aggregate(COL_data[, -c(1, 2)], list(COL_data$site, COL_data$date), mean, 
-          na.rm = TRUE)
+blh_site <- aggregate(COL_data[, -c(1, 2)], list(COL_data$site, COL_data$date),
+                      mean, na.rm = TRUE)
 
 names(blh_site)[1: 2] <- c("site", "date")
 blh_site <- blh_site[-which(blh_site$BLH == "NaN"), ]
@@ -241,6 +240,15 @@ for(i in 1: length(locations_COL$site)) {
     blh_site$Julian[which(blh_site$site == locations_COL$site[i] & 
                             blh_site$Year == locations_COL$Year[i])]
 }
+
+check1 <- rep(NA, length(locations_COL$site))
+
+for(i in 1: length(locations_COL$site)) {
+  check1[i] <- any(diff(a[i, ]) < 0, na.rm = TRUE)
+}
+
+check1 # they are
+
 
 # for degree days
 
