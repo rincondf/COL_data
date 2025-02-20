@@ -359,10 +359,11 @@ points(blh_site$Julian, blh_site$propsBLH2, col = "red", lwd = 2)
 
 
 
-# Truncating WA dataset to 150 < DDs < 920
+# Truncating WA dataset to mmin(COL) < DDs < max(COL)
 
 blh_trncWA <- subset(blh_siteWA, 
-                     blh_siteWA$DDs < 920 & blh_siteWA$DDs > 180)[, -c(8, 9)]
+                     blh_siteWA$DDs < max(blh_site$BLH_DDs) & 
+                       blh_siteWA$DDs > min(blh_site$BLH_DDs))[, -c(8, 9)]
 
 
 blh_trncWA$propsBLH <- rep(NA, length(blh_trncWA$TRAP_COUNT_RAW))
@@ -482,6 +483,14 @@ IntsctWA <- optimize(InterFun, interval =  c(500, 1500),
 abline(v = IntsctWA$minimum, lwd = 2, lty = 4)
 
 
+(1 - pgamma(IntsctWA$minimum, shape = WAsplit$gamma.pars[1, 2], 
+       scale = WAsplit$gamma.pars[2, 2])) +
+  (pgamma(IntsctWA$minimum, shape = WAsplit$gamma.pars[1, 1], 
+          scale = WAsplit$gamma.pars[2, 1]))
+
+
+
+
 # Julian days
 
 WAsplit_JD <- gammamixEM(frqsWA_JD, maxit = 5000)
@@ -511,6 +520,12 @@ IntsctWA_JD <- optimize(InterFun, interval =  c(170, 230),
 
 
 abline(v = IntsctWA_JD$minimum, lwd = 2, lty = 4)
+
+
+(1 - pgamma(IntsctWA_JD$minimum, shape = WAsplit_JD$gamma.pars[1, 2], 
+            scale = WAsplit_JD$gamma.pars[2, 2])) +
+  (pgamma(IntsctWA_JD$minimum, shape = WAsplit_JD$gamma.pars[1, 1], 
+          scale = WAsplit_JD$gamma.pars[2, 1]))
 
 
 # Parameter estimation
